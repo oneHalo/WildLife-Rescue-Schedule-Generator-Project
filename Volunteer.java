@@ -1,18 +1,18 @@
 package edu.ucalgary.oop;
 
 public class Volunteer {
-    private final String NAME;
+    private final String FNAME;
     private final String LNAME;
     private Schedule schedule;
     private VolunteerTask volunteerTask;
     Volunteer(String FNAME, String LNAME, Schedule schedule, VolunteerTask volunteerTask){
-        this.NAME = FNAME;
+        this.FNAME = FNAME;
         this.LNAME = LNAME;
         this.schedule = schedule;
         this.volunteerTask = volunteerTask;
     }
     public String getNAME(){
-        return this.NAME;
+        return (this.FNAME + this.LNAME);
     }
     public Schedule getSchedule(){
         return this.schedule;
