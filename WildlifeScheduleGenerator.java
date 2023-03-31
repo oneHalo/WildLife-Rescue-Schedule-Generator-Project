@@ -3,21 +3,39 @@ import java.awt.EventQueue;
 import javax.swing.*;
 import java.awt.event.*;
 import java.awt.FlowLayout;
+import java.awt.Panel;
+import javax.swing.BoxLayout;
+
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+
+import java.awt.Component;
+
 
 public class WildlifeScheduleGenerator extends  JFrame implements  ActionListener, MouseListener {
 
     private String animaltype;
     private String orphantype;
     private int numberofanimals;
+    private String name;
     private String[] validAnimalTypes = {"fox", "raccoon", "coyote", "porcupine", "beaver"};
+    
+    private JComboBox<String> animalDropdown;
     
     private JLabel instructions;
     private JLabel animalLabel;
-    
     private JLabel orphanLabel;
     private JLabel numberLabel;
+    private JLabel animalnamLabel;
+
+    private JRadioButton yesButton;
+    private JRadioButton noButton;
     
     private JTextField animalInput;
+    private JTextField animalnameInput;
     private JTextField orphanInput;
     private JTextField numberInput;
 
@@ -30,60 +48,88 @@ public class WildlifeScheduleGenerator extends  JFrame implements  ActionListene
             
         
     }
-    public void setupGUI(){
+    public void setupGUI() {
         instructions = new JLabel("Please enter your information to generate a schedule.");
         animalLabel = new JLabel("Type of animal:");
-        orphanLabel = new JLabel("                             Is it a orphan:");
-        numberLabel= new JLabel("             number of animals:");
+        animalnamLabel= new JLabel("Animal name");
+        orphanLabel = new JLabel("Is it a rescue :");
+        numberLabel = new JLabel("Number of animals:");
 
-        animalInput= new JTextField("e.g. Fox", 15);
-        orphanInput= new JTextField("e.g. yes or no", 15);
-        numberInput= new JTextField("e.g. 5, 10", 15);
+        numberInput = new JTextField("e.g. 5, 10", 15);
+        animalnameInput= new JTextField("e.g. Toto", 15);
 
-           
-        
-        animalInput.addMouseListener(this);
-        orphanInput.addMouseListener(this);
+        animalDropdown = new JComboBox<>(validAnimalTypes);
+
+        yesButton = new JRadioButton("Yes");
+        noButton = new JRadioButton("No");
+        ButtonGroup group = new ButtonGroup();
+        group.add(yesButton);
+        group.add(noButton);
+
         numberInput.addMouseListener(this);
+        animalnameInput.addMouseListener(this);
 
         JButton submitInfo = new JButton("Submit");
         submitInfo.addActionListener(this);
 
         JPanel headerPanel = new JPanel();
         headerPanel.setLayout(new FlowLayout());
-        
+
         JPanel clientPanel = new JPanel();
-        clientPanel.setLayout(new FlowLayout());
+        clientPanel.setLayout(new BoxLayout(clientPanel, BoxLayout.PAGE_AXIS));
+
+        
+        JPanel animalnamePanel = new JPanel();
+        animalnamePanel.setLayout(new FlowLayout());
+        animalnamePanel.add(animalnamLabel);
+        animalnamePanel.add(animalnameInput);
+        clientPanel.add(animalnamePanel);
+
+
+
+        JPanel animalPanel = new JPanel();
+        animalPanel.setLayout(new FlowLayout());
+        animalPanel.add(animalLabel);
+        animalPanel.add(animalDropdown);
+        clientPanel.add(animalPanel);
+    
+
+        JPanel orphanPanel = new JPanel();
+        orphanPanel.setLayout(new FlowLayout());
+        orphanPanel.add(orphanLabel);
+        orphanPanel.add(yesButton);
+        orphanPanel.add(noButton);
+        clientPanel.add(orphanPanel);
+
+        JPanel numberPanel = new JPanel();
+        numberPanel.setLayout(new FlowLayout());
+        numberPanel.add(numberLabel);
+        numberPanel.add(numberInput);
+        clientPanel.add(numberPanel);
 
         JPanel submitPanel = new JPanel();
         submitPanel.setLayout(new FlowLayout());
-        
-        headerPanel.add(instructions);
-        clientPanel.add(animalLabel);
-        clientPanel.add(animalInput);
-        clientPanel.add(orphanLabel);
-        clientPanel.add(orphanInput);
-        clientPanel.add(numberLabel);
-        clientPanel.add(numberInput);
         submitPanel.add(submitInfo);
-        
+
+        headerPanel.add(instructions);
         this.add(headerPanel, BorderLayout.NORTH);
         this.add(clientPanel, BorderLayout.CENTER);
         this.add(submitPanel, BorderLayout.PAGE_END);
-
-
     }
 
-
-
-
-    public void actionPerformed(ActionEvent event){
-        animaltype = animalInput.getText();
-        orphantype = orphanInput.getText();
+    public void actionPerformed(ActionEvent event) {
+        animaltype = (String) animalDropdown.getSelectedItem();
         numberofanimals = Integer.parseInt(numberInput.getText());
-        
-        if(validateInput()){
-            JOptionPane.showMessageDialog(this, "Your schedule of the day is " );
+        name= animalInput.getText();
+
+        if (yesButton.isSelected()) {
+            orphantype = "Yes";
+        } else if (noButton.isSelected()) {
+            orphantype = "No";
+        }
+
+        if (validateInput()) {
+            JOptionPane.showMessageDialog(this, "Your schedule of the day is ");
             String[] columnNames = {"Time", "Task", "Qty", "Time Available", "Time Spent"};
             Object[][] data = new Object[5][5];
 
@@ -91,7 +137,6 @@ public class WildlifeScheduleGenerator extends  JFrame implements  ActionListene
             table.setFillsViewportHeight(true);
             JScrollPane scrollPane = new JScrollPane(table);
             scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-            //table.setPreferredScrollableViewportSize(new Dimension(650, 400));
 
             JOptionPane.showMessageDialog(this, scrollPane);
         }
@@ -109,6 +154,10 @@ public class WildlifeScheduleGenerator extends  JFrame implements  ActionListene
 
         if(event.getSource().equals(numberInput))
             numberInput.setText("");
+
+        if (event.getSource().equals(animalnameInput))
+            animalnameInput.setText("");
+          
                 
     }
     
