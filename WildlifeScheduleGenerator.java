@@ -2,6 +2,7 @@ import java.awt.BorderLayout;
 import java.awt.EventQueue;
 import javax.swing.*;
 import java.awt.event.*;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.awt.FlowLayout;
 import java.awt.Panel;
@@ -24,8 +25,9 @@ public class WildlifeScheduleGenerator extends  JFrame implements  ActionListene
     private String name;
     private String[] validAnimalTypes = {"fox", "raccoon", "coyote", "porcupine", "beaver"};
     
-    private int task=0;
+    private int temp=0;
     private JComboBox<String> animalDropdown;
+    private ArrayList<String> medtask=new ArrayList<>();
     
     private JLabel instructions;
     private JLabel animalLabel;
@@ -49,7 +51,10 @@ public class WildlifeScheduleGenerator extends  JFrame implements  ActionListene
     private JTextField medicalInput;
 
     private JPanel clientPanel = new JPanel();
-    JPanel medicaltaskJPanel = new JPanel();
+    private JPanel medicaltaskJPanel = new JPanel();
+
+    private JFrame tasktable;
+
     
 
 
@@ -142,7 +147,7 @@ public class WildlifeScheduleGenerator extends  JFrame implements  ActionListene
         addButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e){
-                task++;
+                temp++;
                 JTextField textField= new JTextField("",15);
                 medicaltaskJPanel.add(textField);
                 textField.requestFocusInWindow();
@@ -153,7 +158,44 @@ public class WildlifeScheduleGenerator extends  JFrame implements  ActionListene
         });
 
         JButton submitInfo = new JButton("Submit");
-        submitInfo.addActionListener(this);
+        submitInfo.setVisible(true);
+        submitInfo.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e){
+                medtask.clear();
+                Component [] components= medicaltaskJPanel.getComponents();
+                for(Component component: components){
+                    if( component instanceof JTextField){
+                        String tasks= ((JTextField)component).getText();
+                        if(!tasks.isEmpty()){
+                            medtask.add(tasks);
+
+                        }
+
+                    }
+                }
+                tasktable= new JFrame("Your schedule of the day is");
+                tasktable.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+                JPanel tabelPanel= new JPanel(new BorderLayout());
+                
+                String[] columnNames= {"Tasks","Time","Qty","Duration"};
+                Object [][] data= new Object[medtask.size()][4];
+        
+                for (int i=0; i<medtask.size();i++){
+                    data[i][0]=medtask.get(i);
+                    data[i][1]="";
+                }
+                JTable table = new JTable(data,columnNames);
+                tabelPanel.add(new JScrollPane(table), BorderLayout.CENTER);
+                tasktable.setContentPane(tabelPanel);
+                tasktable.pack();
+                tasktable.setVisible(true);
+
+            }
+            
+        });
+        
+
 
         JPanel headerPanel = new JPanel();
         headerPanel.setLayout(new FlowLayout());
@@ -206,6 +248,8 @@ public class WildlifeScheduleGenerator extends  JFrame implements  ActionListene
         JPanel submitPanel = new JPanel();
         submitPanel.setLayout(new FlowLayout());
         submitPanel.add(submitInfo);
+        submitPanel.add(clientPanel);
+
 
         headerPanel.add(instructions);
         this.add(headerPanel, BorderLayout.NORTH);
@@ -218,19 +262,7 @@ public class WildlifeScheduleGenerator extends  JFrame implements  ActionListene
        
         numberofanimals = Integer.parseInt(numberInput.getText());
         name= animalInput.getText();
-        // if (YesmedicalButton.isSelected()) {
-        //     medicalLable.setVisible(true);
-        //     JTextArea medicalInput = new JTextArea(5, 20);
-        //     JScrollPane medicalScroll = new JScrollPane(medicalInput);
-        //     JPanel medicalTaskPanel = new JPanel(new BorderLayout());
-        //     medicalTaskPanel.add(medicalScroll, BorderLayout.CENTER);
-        //     medicalTaskPanel.add(new JLabel("Medical Tasks:"), BorderLayout.NORTH);
-        //     JOptionPane.showMessageDialog(this, medicalTaskPanel, "Medical Tasks", JOptionPane.PLAIN_MESSAGE);
-        // }
-    
-        // if(NomedicalButton.isSelected()){
-        //     medicalLable.setVisible(false);
-        // }
+      
 
 
         // if (validateInput()) {
