@@ -24,6 +24,7 @@ public class WildlifeScheduleGenerator extends  JFrame implements  ActionListene
     private String name;
     private String[] validAnimalTypes = {"fox", "raccoon", "coyote", "porcupine", "beaver"};
     
+    private int task=0;
     private JComboBox<String> animalDropdown;
     
     private JLabel instructions;
@@ -46,6 +47,9 @@ public class WildlifeScheduleGenerator extends  JFrame implements  ActionListene
     private JTextField orphanInput;
     private JTextField numberInput;
     private JTextField medicalInput;
+
+    private JPanel clientPanel = new JPanel();
+    JPanel medicaltaskJPanel = new JPanel();
     
 
 
@@ -98,6 +102,8 @@ public class WildlifeScheduleGenerator extends  JFrame implements  ActionListene
         numberInput.addMouseListener(this);
         animalnameInput.addMouseListener(this);
 
+        clientPanel.setLayout(new BoxLayout(clientPanel, BoxLayout.PAGE_AXIS));
+
         yesButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -133,14 +139,27 @@ public class WildlifeScheduleGenerator extends  JFrame implements  ActionListene
             }
         });
 
+        addButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e){
+                task++;
+                JTextField textField= new JTextField("",15);
+                medicaltaskJPanel.add(textField);
+                textField.requestFocusInWindow();
+                medicaltaskJPanel.revalidate();
+                medicaltaskJPanel.repaint();
+
+            }
+        });
+
         JButton submitInfo = new JButton("Submit");
         submitInfo.addActionListener(this);
 
         JPanel headerPanel = new JPanel();
         headerPanel.setLayout(new FlowLayout());
 
-        JPanel clientPanel = new JPanel();
-        clientPanel.setLayout(new BoxLayout(clientPanel, BoxLayout.PAGE_AXIS));
+        //JPanel clientPanel = new JPanel();
+        //clientPanel.setLayout(new BoxLayout(clientPanel, BoxLayout.PAGE_AXIS));
 
 
         JPanel animalnamePanel = new JPanel();
@@ -177,7 +196,7 @@ public class WildlifeScheduleGenerator extends  JFrame implements  ActionListene
         medicalPanel.add(NomedicalButton);
         clientPanel.add(medicalPanel);
 
-        JPanel medicaltaskJPanel = new JPanel();
+        //JPanel medicaltaskJPanel = new JPanel();
         medicaltaskJPanel.add(medicalLable);
         medicaltaskJPanel.add(medicalInput);
         medicaltaskJPanel.add(addButton);
@@ -199,35 +218,20 @@ public class WildlifeScheduleGenerator extends  JFrame implements  ActionListene
        
         numberofanimals = Integer.parseInt(numberInput.getText());
         name= animalInput.getText();
-        if (YesmedicalButton.isSelected()) {
-            medicalLable.setVisible(true);
-            JTextArea medicalInput = new JTextArea(5, 20);
-            JScrollPane medicalScroll = new JScrollPane(medicalInput);
-            JPanel medicalTaskPanel = new JPanel(new BorderLayout());
-            medicalTaskPanel.add(medicalScroll, BorderLayout.CENTER);
-            medicalTaskPanel.add(new JLabel("Medical Tasks:"), BorderLayout.NORTH);
-            JOptionPane.showMessageDialog(this, medicalTaskPanel, "Medical Tasks", JOptionPane.PLAIN_MESSAGE);
-        }
+        // if (YesmedicalButton.isSelected()) {
+        //     medicalLable.setVisible(true);
+        //     JTextArea medicalInput = new JTextArea(5, 20);
+        //     JScrollPane medicalScroll = new JScrollPane(medicalInput);
+        //     JPanel medicalTaskPanel = new JPanel(new BorderLayout());
+        //     medicalTaskPanel.add(medicalScroll, BorderLayout.CENTER);
+        //     medicalTaskPanel.add(new JLabel("Medical Tasks:"), BorderLayout.NORTH);
+        //     JOptionPane.showMessageDialog(this, medicalTaskPanel, "Medical Tasks", JOptionPane.PLAIN_MESSAGE);
+        // }
+    
+        // if(NomedicalButton.isSelected()){
+        //     medicalLable.setVisible(false);
+        // }
 
-        if (yesButton.isSelected()) {
-            orphantype = "yes";
-            numberInput.setVisible(true);
-            numberLabel.setVisible(true);
-        } else {
-            orphantype = "no";
-            numberInput.setVisible(false);
-            numberLabel.setVisible(false);
-        }
-
-       
-        if(NomedicalButton.isSelected()){
-            medicalLable.setVisible(false);
-        }
-
-        
-
-
-        
 
         // if (validateInput()) {
         //     JOptionPane.showMessageDialog(this, "Your schedule of the day is ");
@@ -242,6 +246,8 @@ public class WildlifeScheduleGenerator extends  JFrame implements  ActionListene
         //     JOptionPane.showMessageDialog(this, scrollPane);
         // }
     }
+
+
     
     
     public void mouseClicked(MouseEvent event){
@@ -281,49 +287,16 @@ public class WildlifeScheduleGenerator extends  JFrame implements  ActionListene
         
         boolean allInputValid = true;
         
-        // if(!animaltype.equalsIgnoreCase("fox")&&!animaltype.equalsIgnoreCase("raccoon")
-        // &&!animaltype.equalsIgnoreCase("coyote")&&!animaltype.equalsIgnoreCase("porcupine")
-        // &&!animaltype.equalsIgnoreCase("beaver")){
-        //     allInputValid = false;
-        //     JOptionPane.showMessageDialog(this, animaltype + " is an invalid name input.");
-        // }
-        // if (!orphantype.equalsIgnoreCase("yes")&&!orphantype.equalsIgnoreCase("no")){
-        //     allInputValid = false;
-        //     JOptionPane.showMessageDialog(this, orphantype + " is an invalid insert yes or no.");
-        // }
         if(!Character.isUpperCase(name.charAt(0)) || name.length() < 2 || name.length() > 26){
             allInputValid = false;
             JOptionPane.showMessageDialog(this, name + " is an invalid name input.");
         }
-        
-      
+     
         
         return allInputValid;
         
     }
 
-    // public boolean validateInput() {
-    //     String input = numberInput.getText();
-    //     int numAnimals = 0;
-    //     try {
-    //         numAnimals = Integer.parseInt(input);
-    //     } catch (NumberFormatException e) {
-    //         JOptionPane.showMessageDialog(this, "Please enter a valid number of animals.");
-    //         return false;
-    //     }
-    //     if (numAnimals <= 0) {
-    //         JOptionPane.showMessageDialog(this, "Please enter a number greater than 0.");
-    //         return false;
-    //     }
-    //     // if (orphantype.equals("yes")) {
-    //     //     int orphanCount = (int) orphanComboBox.getSelectedItem();
-    //     //     if (orphanCount <= 0) {
-    //     //         JOptionPane.showMessageDialog(this, "Please select a valid number of orphans.");
-    //     //         return false;
-    //     //     }
-    //     // }
-    //     return true;
-    // }
     
     
   
