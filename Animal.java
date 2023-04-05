@@ -1,87 +1,58 @@
 package edu.ucalgary.oop;
 
+import java.util.LinkedList;
+
 public class Animal {
+    protected final int ID;
+    protected final String NAME;
+    protected final String SPECIES;
+//    protected final boolean RESC_TYPE;
+//    protected  int feedTime;
+//    protected  int prepTime;
+//    protected  int cleaningTime;
+//    protected  int feedWindow;
+//    protected  int numberOfAnimals;
+    // protected LinkedList<Task> animalTasks;
+    public Animal(int id, String name, String species){
+        this.NAME = name;
+//        this.RESC_TYPE = resc_type;
+        this.ID = id;
+        this.SPECIES = species;
+//        this.numberOfAnimals = 1;
+//        animalTasks = new LinkedList<>();
+//        edu.ucalgary.oop2.Task tempFeedingTask= new edu.ucalgary.oop2.Task("Feeding",this.calculateFeedDuration());
+//        edu.ucalgary.oop2.Task tempCleaningTask= new edu.ucalgary.oop2.Task("Cleaning",this.getCleaningTime());
+//
+//        animalTasks.add(tempCleaningTask);
+//        animalTasks.add(tempFeedingTask);
+    }
+//    public Animal(String name, int id, int numberOfAnimals){
+//        this.NAME = name;
+//        this.ID = id;
+//        this.numberOfAnimals = numberOfAnimals;
+//        animalTasks = new LinkedList<>();
+//
+//    }
+//    public  int getFeedTime(){return this.feedTime;}
+//
+//    public  int getPrepTime(){return this.prepTime;}
+//
+//    public  int getCleaningTime(){return this.cleaningTime;}
+//
+//    public  int getFeedWindow(){return this.feedWindow;}
 
-    private final String SPECIES;
-    private final String ACTIVITY;
-    private final String RESCTYPE;
-    private final int FEED_TIME;
-    private final int CLEANING_TIME;
-    private final int PREP_TIME;
-    private final int FEED_WINDOW;
-    //private final static String[] ACTYPE = {"Nocturnal", "Diurnal", "Crepuscular"};
+//    public  String getRescType(){return this.RESC_TYPE;}
 
-    private Vet vet;
-    private Volunteer[] volunteer;
+    public  String getName(){return this.NAME;}
 
-    Animal(String SPECIES, String ACTIVITY, String RESCTYPE, String ActivityType, Vet vet, Volunteer volunteer, int FEED_TIME, int CLEANING_TIME, int PREP_TIME, int FEED_WINDOW){
-        this.SPECIES = SPECIES;
-            switch (SPECIES.toLowerCase()){
-                case "porcupine":
-                    this.CLEANING_TIME = 10;
-                    this.FEED_TIME = 5;
-                    this.FEED_WINDOW = 3;
-                    this.PREP_TIME = 0;
-                    break;
-                case "coyote":
-                   this.CLEANING_TIME = 10;
-                    this.FEED_TIME = 5;
-                    this.FEED_WINDOW = 3;
-                    this.PREP_TIME = 10;
-                    break;
-                case "fox" :
-                    this.CLEANING_TIME = 5;
-                    this.FEED_TIME = 5;
-                    this.FEED_WINDOW = 3;
-                    this.PREP_TIME = 5;
-                    break;
-                case "beaver":
-                    this.CLEANING_TIME = 5;
-                    this.FEED_TIME = 5;
-                    this.FEED_WINDOW = 5;
-                   this.PREP_TIME = 0;
-                    break;
-                case "raccoon":
-                    this.CLEANING_TIME = 5;
-                    this.FEED_TIME = 5;
-                    this.FEED_WINDOW = 3;
-                    this.PREP_TIME = 0;
-                    break;
-                default:
-                    this.PREP_TIME = PREP_TIME;
-                    this.FEED_WINDOW = FEED_WINDOW;
-                    this.FEED_TIME = FEED_TIME;
-                    this.CLEANING_TIME = CLEANING_TIME;
-            }
-        this.ACTIVITY = ACTIVITY;
-        this.RESCTYPE = RESCTYPE;
-        boolean valid_resc_type = false;
-        for(var act_type: ActType.values()){
-            if(ActivityType.equalsIgnoreCase(act_type.toString())){
-                RESCTYPE = act_type.toString();
-                break;
-            }
-        }
-        if(valid_resc_type == false){
-            throw new IllegalArgumentException("Rescue Type is not valid");
-        }
-    }
-    public String getSPECIES(){
-        return this.SPECIES;
-    }
-    public String getACTIVITY(){
-        return this.ACTIVITY;
-    }
-    public String getRESCTYPE(){
-        return this.RESCTYPE;
-    }
-    public Volunteer[] getVolunteer(int index_of_Volunteer){
-        return this.volunteer;
-    }
-    public void setVolunteer(Volunteer[] volunteer){
-        this.volunteer = volunteer;
-    }
-    public void setVet(Vet vet){
-        this.vet = vet;
-    }
+    public int getID() {return this.ID;}
+//
+//    public int calculateFeedDuration(){
+//        return this.getPrepTime() + (this.getFeedTime() * numberOfAnimals);
+//    }
+//    public void updateTask(Task task){
+//        this.animalTasks.add(task);
+//    }
+
+
 }
