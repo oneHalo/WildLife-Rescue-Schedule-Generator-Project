@@ -1,7 +1,7 @@
 package edu.ucalgary.oop;
 
 public class Treatment {
-    
+
     private int animalID;
     private int taskID;
     private int startHour;
