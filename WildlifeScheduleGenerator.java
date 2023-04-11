@@ -14,287 +14,103 @@ import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.DefaultTableModel;
 
 import java.awt.Component;
 
 
-public class WildlifeScheduleGenerator extends  JFrame implements  ActionListener, MouseListener {
-
-    private String animaltype;
-    private String orphantype;
-    private int numberofanimals;
-    private String name;
-    private String[] validAnimalTypes = {"Not Selected", "fox", "raccoon", "coyote", "porcupine", "beaver"};
-
-    private JComboBox<String> animalDropdown;
-
-    private JLabel instructions;
-    private JLabel animalLabel;
-    private JLabel orphanLabel;
-    private JLabel numberLabel;
-    private JLabel medicaltaskLabel;
-    private JLabel medicalLable;
-    private JLabel animalnameLabel;
-
-
-    private JRadioButton yesButton;
-    private JRadioButton noButton;
-    private JRadioButton YesmedicalButton;
-    private JRadioButton NomedicalButton;
-
-
-    private JTextField animalInput;
-    private JTextField animalnameInput;
-    private JTextField orphanInput;
-    private JTextField numberInput;
-    private JTextField medicalInput;
-
-
+public class WildlifeScheduleGenerator extends JFrame {
+    JFrame WildLifeMain;
     public WildlifeScheduleGenerator() {
-        super("Wildlife  Schedule Generator");
-        setSize(500, 300);
-        setupGUI();
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        WildLifeMain = new JFrame();
+        WildLifeMain.setTitle("Schedule Viewer");
+        WildLifeMain.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        WildLifeMain.setSize(900, 400);
+        WildLifeMain.setLocationRelativeTo(null);
 
+        // Create a panel for the button
+        JPanel panel = new JPanel();
+        JButton viewScheduleButton = new JButton("View Schedule");
+        viewScheduleButton.addActionListener(new ScheduleButton());
+        panel.add(viewScheduleButton);
 
+        // Add the panel to the bottom of the frame
+        WildLifeMain.add(panel, BorderLayout.SOUTH);
+
+        JPanel welcomePanel = new JPanel();
+        ImageIcon i = new ImageIcon("WildLifeRescue.png");
+
+        JLabel welcomeText = new JLabel("Welcome to WildLife Rescue Centre",i, SwingConstants.HORIZONTAL);
+        welcomeText.setBounds(50, 50 , 50 , 50);
+        welcomePanel.add(welcomeText);
+        WildLifeMain.add(welcomePanel, BorderLayout.NORTH);
+
+        WildLifeMain.setVisible(true);
     }
-
-    public void setupGUI() {
-        instructions = new JLabel("Please enter your information to generate a schedule.");
-        animalLabel = new JLabel("Type of animal:");
-        animalnameLabel = new JLabel("Animal name");
-        orphanLabel = new JLabel("Is it a rescue :");
-        medicaltaskLabel = new JLabel("Does the animal need Medical tasks");
-
-
-        numberLabel = new JLabel("Number of animals:");
-        numberLabel.setVisible(false);
-        numberInput = new JTextField(15);
-        numberInput.setVisible(false);
-
-        medicalLable = new JLabel("Insert the number of Medical Tasks and then press Go To Task: ");
-        medicalLable.setVisible(false);
-        medicalInput = new JTextField("", 15);
-        medicalInput.setVisible(false);
-
-
-        animalnameInput = new JTextField("e.g. Toto", 15);
-
-        animalDropdown = new JComboBox<>(validAnimalTypes);
-
-        yesButton = new JRadioButton("Yes");
-        noButton = new JRadioButton("No");
-        ButtonGroup group = new ButtonGroup();
-        group.add(yesButton);
-        group.add(noButton);
-
-
-        YesmedicalButton = new JRadioButton("Yes");
-        NomedicalButton = new JRadioButton("No");
-        ButtonGroup groupM = new ButtonGroup();
-        groupM.add(YesmedicalButton);
-        groupM.add(NomedicalButton);
-        JButton addButton = new JButton("Add");
-        addButton.setVisible(false);
-
-        numberInput.addMouseListener(this);
-        animalnameInput.addMouseListener(this);
-
-        yesButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                numberLabel.setVisible(true);
-                numberInput.setVisible(true);
-            }
-        });
-        noButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                numberLabel.setVisible(false);
-                numberInput.setVisible(false);
-            }
-        });
-
-        YesmedicalButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                medicalLable.setVisible(true);
-                medicalInput.setVisible(true);
-                addButton.setVisible(true);
-            }
-
-
-        });
-
-        NomedicalButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                medicalLable.setVisible(false);
-                medicalInput.setVisible(false);
-                addButton.setVisible(false);
-            }
-        });
-
-        JButton submitInfo = new JButton("Add Animal and Go to Tasks");
-        submitInfo.addActionListener(this);
-
-        JPanel headerPanel = new JPanel();
-        headerPanel.setLayout(new FlowLayout());
-
-        JPanel clientPanel = new JPanel();
-        clientPanel.setLayout(new BoxLayout(clientPanel, BoxLayout.PAGE_AXIS));
-
-        JButton viewSchedule = new JButton("View Schedule");
-        viewSchedule.addActionListener(new viewSchedule());
-
-
-        JPanel animalnamePanel = new JPanel();
-        animalnamePanel.setLayout(new FlowLayout());
-        animalnamePanel.add(animalnameLabel);
-        animalnamePanel.add(animalnameInput);
-        clientPanel.add(animalnamePanel);
-
-
-        JPanel animalPanel = new JPanel();
-        animalPanel.setLayout(new FlowLayout());
-        animalPanel.add(animalLabel);
-        animalPanel.add(animalDropdown);
-        clientPanel.add(animalPanel);
-
-
-        JPanel orphanPanel = new JPanel();
-        orphanPanel.setLayout(new FlowLayout());
-        orphanPanel.add(orphanLabel);
-        orphanPanel.add(yesButton);
-        orphanPanel.add(noButton);
-        clientPanel.add(orphanPanel);
-
-        JPanel numberPanel = new JPanel();
-        numberPanel.setLayout(new FlowLayout());
-        numberPanel.add(numberLabel);
-        numberPanel.add(numberInput);
-        clientPanel.add(numberPanel);
-
-        JPanel medicalPanel = new JPanel();
-        medicalPanel.setLayout(new FlowLayout());
-        medicalPanel.add(medicaltaskLabel);
-        medicalPanel.add(YesmedicalButton);
-        medicalPanel.add(NomedicalButton);
-        clientPanel.add(medicalPanel);
-
-        JPanel medicaltaskJPanel = new JPanel();
-        medicaltaskJPanel.add(medicalLable);
-        medicaltaskJPanel.add(medicalInput);
-        medicaltaskJPanel.add(addButton);
-        clientPanel.add(medicaltaskJPanel);
-
-
-        JPanel submitPanel = new JPanel();
-        submitPanel.setLayout(new FlowLayout());
-        submitPanel.add(submitInfo);
-        submitPanel.add(viewSchedule);
-
-        headerPanel.add(instructions);
-        this.add(headerPanel, BorderLayout.NORTH);
-        this.add(clientPanel, BorderLayout.CENTER);
-        this.add(submitPanel, BorderLayout.PAGE_END);
-    }
-
-    public void actionPerformed(ActionEvent event) {
-        animaltype = (String) animalDropdown.getSelectedItem();
-
-        numberofanimals = Integer.parseInt(numberInput.getText());
-        name = animalInput.getText();
-        if (YesmedicalButton.isSelected()) {
-            medicalLable.setVisible(true);
-            JTextArea medicalInput = new JTextArea(5, 20);
-            JScrollPane medicalScroll = new JScrollPane(medicalInput);
-            JPanel medicalTaskPanel = new JPanel(new BorderLayout());
-            medicalTaskPanel.add(medicalScroll, BorderLayout.CENTER);
-            medicalTaskPanel.add(new JLabel("Medical Tasks:"), BorderLayout.NORTH);
-            JOptionPane.showMessageDialog(this, medicalTaskPanel, "Medical Tasks", JOptionPane.PLAIN_MESSAGE);
-        }
-
-        if (yesButton.isSelected()) {
-            orphantype = "yes";
-            numberInput.setVisible(true);
-            numberLabel.setVisible(true);
-        } else {
-            orphantype = "no";
-            numberInput.setVisible(false);
-            numberLabel.setVisible(false);
-        }
-
-
-        if (NomedicalButton.isSelected()) {
-            medicalLable.setVisible(false);
-        }
-
-    }
-
-
-    public void mouseClicked(MouseEvent event) {
-
-        if (event.getSource().equals(animalInput))
-            animalInput.setText("");
-
-
-        if (event.getSource().equals(orphanInput))
-            orphanInput.setText("");
-
-        if (event.getSource().equals(numberInput))
-            numberInput.setText("");
-
-        if (event.getSource().equals(animalnameInput))
-            animalnameInput.setText("");
-
-
-    }
-
-    public void mouseEntered(MouseEvent event) {
-
-    }
-
-    public void mouseExited(MouseEvent event) {
-
-    }
-
-    public void mousePressed(MouseEvent event) {
-
-    }
-
-    public void mouseReleased(MouseEvent event) {
-
-    }
-
-    private boolean validateInput() {
-
-        boolean allInputValid = true;
-
-
-        if (!Character.isUpperCase(name.charAt(0)) || name.length() < 2 || name.length() > 26) {
-            allInputValid = false;
-            JOptionPane.showMessageDialog(this, name + " is an invalid name input.");
-        }
-
-
-        return allInputValid;
-
-    }
-
-
-    private class viewSchedule implements ActionListener {
-
+    public class ScheduleButton implements ActionListener{
+        JFrame forTable;
+        JTable table;
+        JScrollPane scrollPane;
+        DefaultTableModel tableModel;
         @Override
         public void actionPerformed(ActionEvent e) {
-            //Connect To DataBase
+            WildLifeMain.setVisible(false);
+            forTable = new JFrame("Task and Schedule Table");
+            forTable.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            forTable.setSize(900, 700);
+            forTable.setLocationRelativeTo(null);
+
+            tableModel = new DefaultTableModel(new Object[]{"Hours", "Tasks", "Time Spent", "Time Available"}, 24);
+
+            for (int i = 0; i < 24; i++) {
+                tableModel.setValueAt(i, i, 0);
+                tableModel.setValueAt("", i, 3);
+            }
+
+            table = new JTable(tableModel);
+            addToTable(table);
+            table.setRowHeight(230);
+
+            scrollPane = new JScrollPane(table);
+            forTable.add(scrollPane, BorderLayout.CENTER);
+
+            forTable.setVisible(true);
+        }
+        public void addToTable(JTable table){
+           var schedule = Schedule.getSchedule();
+           var tasks = Schedule.getTasks();
+           var animals = Schedule.getAnimals();
+            DefaultTableCellRenderer centre = new DefaultTableCellRenderer();
+            centre.setHorizontalAlignment(10);
+           for(int i = 0; i< schedule.size(); i++){
+               StringBuilder task = new StringBuilder();
+               for(int j = 0; j<schedule.get(i).size(); j++){
+                   task.append(tasks.get(schedule.get(i).get(j).getTaskID()-1).getDescription()+ "\n ");
+                  task.append(animals.get(schedule.get(i).get(j).getAnimalID()-1).getName()+ "\n ");
+
+                }
+               JPanel temp = new JPanel();
+               JLabel tempLabel = new JLabel(task.toString());
+               temp.add(tempLabel);
+               table.add(temp);
+
+            }
+
         }
     }
 
-    public static void main(String[] args) {
-
-        EventQueue.invokeLater(() -> {
-            new WildlifeScheduleGenerator().setVisible(true);
-        });
+    public static void main(String[] args) throws IllegalScheduleException{
+        Schedule myJDBC = new Schedule();
+        myJDBC.createConnection();
+        myJDBC.storeAnimals();
+        myJDBC.storeTasks();
+        int totalTasks = myJDBC.storeSortedMedicalTasks();
+        myJDBC.storeTreatments();
+        myJDBC.storeGeneralTasks(totalTasks+1);
+        myJDBC.fillSchedule();
+        myJDBC.fixSchedule();
+        new WildlifeScheduleGenerator();
     }
+
 }
