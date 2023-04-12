@@ -20,7 +20,7 @@ public class DatabaseConnector {
     public void createConnection(){
 
         try{
-            dbConnect = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/", "root", "Oshouman123!");
+            dbConnect = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/EWR", "root", "Canada77");
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -62,10 +62,31 @@ public class DatabaseConnector {
         }
     }
 
-    public static int getWindowFromTaskID(int id) {
-        int window = 0;
-        for (int i = 0; i < tasks.size(); i++) {
-            if (id == tasks.get(i).getID()) {
+    public void deleteTreatment(int animalID, int taskID, int startHour){
+
+        try {
+            String query = "DELETE FROM TREATMENTS WHERE animalID = ? taskID = ? startHour = ?";
+            PreparedStatement myStmt = dbConnect.prepareStatement(query);
+
+            myStmt.setInt(1, animalID);
+            myStmt.setInt(2, taskID);
+            myStmt.setInt(3, startHour);
+
+            int rowCount = myStmt.executeUpdate();
+            System.out.println("Rows affected: " + rowCount);
+
+            myStmt.close();
+
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+
+    }
+
+public static int getWindowFromTaskID(int id) {
+    int window = 0;
+    for (int i = 0; i < tasks.size(); i++) {
+        if (id == tasks.get(i).getID()) {
                 window = tasks.get(i).getWindow();
             }
         }
@@ -162,6 +183,6 @@ public class DatabaseConnector {
             }
         }
         tasks = tempSort;
-
     }
+
 }

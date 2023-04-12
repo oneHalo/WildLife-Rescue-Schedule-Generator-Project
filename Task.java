@@ -5,8 +5,8 @@ public class Task {
 
     private int duration; // Stores required time to complete task
     private String description; // Stores description of the task
-    private int maxWindow; // Stores maximum window of the task
-    private int taskID; // Stores task id
+    int maxWindow; // Stores maximum window of the task
+    int taskID; // Stores task id
 
     // Initializes task id, description, duration, and max window
     public Task(int taskID, String description, int duration, int maxWindow) {

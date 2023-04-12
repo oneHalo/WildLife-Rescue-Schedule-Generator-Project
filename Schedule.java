@@ -37,7 +37,7 @@ public class Schedule {
     public void createConnection(){
 
         try{
-            dbConnect = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/EWR", "root", "Oshouman123!");
+            dbConnect = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/EWR", "root", "Canada77");
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -161,6 +161,28 @@ public class Schedule {
         }
     }
 
+    // Deletes treatment from database with given animalID, taskID, and startHour
+    public void deleteTreatment(int animalID, int taskID, int startHour){
+
+        try {
+            String query = "DELETE FROM TREATMENTS WHERE (animalID = ?) AND (taskID = ?) AND (startHour = ?)";
+            PreparedStatement myStmt = dbConnect.prepareStatement(query);
+
+            myStmt.setInt(1, animalID);
+            myStmt.setInt(2, taskID);
+            myStmt.setInt(3, startHour);
+
+            int rowCount = myStmt.executeUpdate();
+            System.out.println("Rows affected: " + rowCount);
+
+            myStmt.close();
+
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+
+    }
+
     // Prints fixed schedule
     public static void printSchedule(){
         for(int i =0; i<schedule.size(); i++){
@@ -252,10 +274,14 @@ public class Schedule {
 
     // fixes the schedule according to treatments maximum windows, empty schedule time slots, and requests backup
     // volunteer when needed
-    public void fixSchedule() throws IllegalScheduleException {
+    public Integer[] fixSchedule() throws IllegalScheduleException {
+        int reali = -1, realj = -1;
+        try{
         for (int i = 0; i < schedule.size(); i++) {
+
             int time_spent = 0;
             for (int j = 0; j < schedule.get(i).size(); j++) {
+
                 Treatment treatment = schedule.get(i).get(j);
                 int taskID = treatment.getTaskID();
                 time_spent += getDurationFromTaskID(taskID);
@@ -283,11 +309,19 @@ public class Schedule {
                             j -= 1;
                             schedule.get(i + 1).add(treatment);
                         } else {
+                            reali = i;
+                            realj = j;
                             throw new IllegalScheduleException("");
                         }
                     }
                 }
             }
+        }
+    }catch(IllegalScheduleException e){
+        e.printStackTrace();
+        }finally {
+            Integer[] temp = new Integer[]{reali, realj};
+            return temp;
         }
     }
     public static void main(String[] args) throws IllegalScheduleException {
