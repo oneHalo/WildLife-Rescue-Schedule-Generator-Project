@@ -16,6 +16,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableCellRenderer;
 
 import java.awt.Component;
 
@@ -67,35 +68,47 @@ public class WildlifeScheduleGenerator extends JFrame {
                 tableModel.setValueAt(i, i, 0);
                 tableModel.setValueAt("", i, 3);
             }
-
+            DefaultTableCellRenderer centreRenderer = new DefaultTableCellRenderer();
+            centreRenderer.setHorizontalAlignment(JLabel.CENTER);
             table = new JTable(tableModel);
             addToTable(table);
-            table.setRowHeight(230);
-
-            scrollPane = new JScrollPane(table);
-            forTable.add(scrollPane, BorderLayout.CENTER);
-
+//            table.setRowHeight(230);
+//
+//            scrollPane = new JScrollPane(table);
+//            forTable.add(scrollPane, BorderLayout.CENTER);
+//
             forTable.setVisible(true);
         }
         public void addToTable(JTable table){
-           var schedule = Schedule.getSchedule();
+
+            var schedule = Schedule.getSchedule();
            var tasks = Schedule.getTasks();
            var animals = Schedule.getAnimals();
-            DefaultTableCellRenderer centre = new DefaultTableCellRenderer();
+            int p = 0;
+           DefaultTableCellRenderer centre = new DefaultTableCellRenderer();
             centre.setHorizontalAlignment(10);
            for(int i = 0; i< schedule.size(); i++){
+//               JTextArea textArea = new JTextArea();
+//               textArea.setEditable(false);
+//               JScrollPane scrollPane1 = new JScrollPane(textArea);
+//               this.forTable.add(scrollPane1);
                StringBuilder task = new StringBuilder();
+              //task.append("Time: " + i + "\n");
                for(int j = 0; j<schedule.get(i).size(); j++){
-                   task.append(tasks.get(schedule.get(i).get(j).getTaskID()-1).getDescription()+ "\n ");
-                  task.append(animals.get(schedule.get(i).get(j).getAnimalID()-1).getName()+ "\n ");
+                   task.append(tasks.get(schedule.get(i).get(j).getTaskID()-1).getDescription() + " ");
+                  task.append(animals.get(schedule.get(i).get(j).getAnimalID()-1).getName()+"\n");
 
-                }
-               JPanel temp = new JPanel();
-               JLabel tempLabel = new JLabel(task.toString());
-               temp.add(tempLabel);
-               table.add(temp);
+                }JTextArea textArea = new JTextArea();
 
-            }
+               textArea.append(task.toString() + "\n");
+
+               this.table.setValueAt(textArea.toString(), i, 1);
+
+
+
+
+            }this.forTable.add(this.table);
+
 
         }
     }
