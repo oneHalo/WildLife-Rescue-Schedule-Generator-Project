@@ -34,10 +34,28 @@ public class Schedule {
     }
 
     // Connect to database
+    // -> The login is read from the environment variables DB_URL, DB_USER and DB_PASSWORD
     public void createConnection(){
 
+        String url = System.getenv("DB_URL");
+        String user = System.getenv("DB_USER");
+        String password = System.getenv("DB_PASSWORD");
+
+        if (url == null || url.isEmpty()) {
+            System.err.println("Cannot connect to the database: environment variable DB_URL is not set.");
+            return;
+        }
+        if (user == null || user.isEmpty()) {
+            System.err.println("Cannot connect to the database: environment variable DB_USER is not set.");
+            return;
+        }
+        if (password == null) {
+            System.err.println("Cannot connect to the database: environment variable DB_PASSWORD is not set.");
+            return;
+        }
+
         try{
-            dbConnect = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/EWR", "root", "Canada77");
+            dbConnect = DriverManager.getConnection(url, user, password);
         } catch (SQLException e) {
             e.printStackTrace();
         }
